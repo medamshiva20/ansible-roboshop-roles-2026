@@ -1,12 +1,17 @@
+- name: setup application
+  ansible.builtin.import_role:
+   name: common
+   tasks_from: app-setup.yaml
+
 - name: Install nodejs 
   ansible.builtin.import_role:
    name: common
    tasks_from: nodejs-setup.yaml
 
-- name: setup application
+- name: Start and reload the daemon
   ansible.builtin.import_role:
    name: common
-   tasks_from: app-setup.yaml
+   tasks_from: systemd-setup.yaml
 
 - name: install mongodb client
   ansible.builtin.dnf:
@@ -25,10 +30,7 @@
   ansible.builtin.shell: mongosh --host "{{ MONGODB_HOST }}" </app/db/master-data.js
   when: catalogue_output.stdout  | int < 0
 
-- name: Start and reload the daemon
-  ansible.builtin.import_role:
-   name: common
-   tasks_from: systemd-setup.yaml
+
 
 - name: start catalogue
   ansible.builtin.service:
