@@ -24,7 +24,7 @@
    state: present
 
 - name: check the products are available or not 
-  ansible.builtin.command: mongosh --host {{component}} --quiet --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
+  ansible.builtin.command: mongosh --host "{{MONGODB_HOST}}}" --quiet --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
   register: catalogue_output
 
 - name: Display the output in JSON format
