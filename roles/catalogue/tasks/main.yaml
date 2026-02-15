@@ -1,38 +1,26 @@
-- name: setup application
-  ansible.builtin.import_role:
-   name: common
-   tasks_from: app-setup.yaml
+- name: Copy mongo.repo
+  ansible.builtin.copy:
+   src: mongo.repo
+   dest: /etc/yum.repos.d/mongo.repo
 
-- name: Install nodejs 
-  ansible.builtin.import_role:
-   name: common
-   tasks_from: nodejs-setup.yaml
-
-- name: Start and reload the daemon
-  ansible.builtin.import_role:
-   name: common
-   tasks_from: systemd-setup.yaml
-
-- name: install mongodb client
+- name: Install mongodb client package
   ansible.builtin.dnf:
    name: mongodb-mongosh
    state: present
 
-- name: check products loaded
-  ansible.builtin.command: mongosh --host "{{ MONGODB_HOST }}" --quiet  --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
+- name: 
+  ansible.builtin.command: mongosh --host {{component}} --quit --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
   register: catalogue_output
 
-- name: print the output
+- name: Display the output in JSON format
   ansible.builtin.debug:
-   msg: "{{ catalogue_output }}"
+   msg: "{{catalogue_output}}"
 
-- name: load the products
-  ansible.builtin.shell: mongosh --host "{{ MONGODB_HOST }}" </app/db/master-data.js
-  when: catalogue_output.stdout  | int < 0
+- name: Load the mongodb products
+  ansible.builtin.shell: mongosh --host "{{MONGODB_HOST}}" </app/db/master-data.js
+  when: catalogue_output.stdout | int < 0
 
-- name: start catalogue
+- name: Retsrat the {{catalogue}} service
   ansible.builtin.service:
-   name: catalogue
+   name: "{{component}}"
    state: restarted
-   enabled: yes
-
