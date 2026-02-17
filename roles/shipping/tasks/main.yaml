@@ -18,6 +18,13 @@
    name: mysql
    state: present
 
+- name: Install python related dependencies
+  ansible.builtin.pip:
+   name: "{{item}}"
+   state: present
+  loop:
+   - PyMySQL
+
 - name: Import shipping data
   community.mysql.mysql_db:
    state: import

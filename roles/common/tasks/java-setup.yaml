@@ -2,6 +2,3 @@
   ansible.builtin.dnf:
    name: maven 
    state: present
-
-
-
