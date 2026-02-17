@@ -5,7 +5,3 @@
 
 
 
-- name: Rename the jar file
-  ansible.builtin.shell: mv target/shipping-1.0.jar shipping.jar
-  args:
-   chdir: /app 
