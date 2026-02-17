@@ -24,7 +24,7 @@
    state: present
   loop:
    - PyMySQL
-
+   - cryptography
 - name: Import shipping data
   community.mysql.mysql_db:
    state: import
