@@ -7,6 +7,7 @@
   ansible.builtin.import_role:
    name: common
    tasks_from: app-setup.yaml
+  tags: deployment
 
 - name: Starting the service
   ansible.builtin.import_role:
