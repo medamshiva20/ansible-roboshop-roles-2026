@@ -1,5 +1,5 @@
 - name: Inmport vs include role
-  tasks: local
+  hosts: local
   connection: local
   roles:
    - include-import
